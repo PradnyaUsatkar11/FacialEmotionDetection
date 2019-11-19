@@ -1,0 +1,13 @@
+{
+    "type": "service_account",
+    "project_id": "tictocgame-256618",
+    "private_key_id": "30e738fe53daf915664960b48ab26393fe36634d",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCxb3l5YXL/GXYM\nmlausvuC+uaAs4SSXT3b1d7jyL1iN81Ns9vfryN+tcv0FfDtvvmO51rArfqNtkl6\nHfJIHhIRU8foHVwuBV5wkJwnIRv2TnkUPoOzwbJPyAvgSCWaw01r3ctJD9sHJhhJ\n6xaw2l2phAys1OXoGbwN77x8ApqThbF/Hn0aLwAAK/ZCuJ4hv9wjScYxVwWAtTme\nru+ucd+um5urNIAcs6La8svl1PTrZ64WBii2h7bb/2UyKlaVZiI6g402rClaOhWN\nqwCZbbVwvytuw8MXRWX3F7+e8YaA/nprQX9lWWIEGTRIQrCmDGphj5yCBBY2NCKr\nR2zGY7Q5AgMBAAECggEAUrqbhDUj9X4NFPY3GVA5RYovQ+2vj8CqsV+oA0OazXsg\nHa0RBNu3bIJd/EnooikLWY5UOYdEzaMi4i2pQ+fFW8/Y4sghrRFyxYAfVn0w+OgA\nuygkpwDWXy1yIBnzcpPB+tuYR1H9uPkRlRFn7IB78Cgx8rl3En9BN6xCEP3zzXje\nCkfbH677/pV+pxlEpF2bTDdE0uPUj2YKNRLPK025HGs+gdMbOeKpveMiHQVM2eWY\n4PaWWy2vPwWd4NHuAw4JtwdbxC/1i9dz8znVI6JXfbb+XqfKtVI1h7LV8ULYA2uJ\nKJVyh/NTmMK4e/SbseZqb1YErZMxN2u1r1Oibi4uYwKBgQDsS7ot+clFK74ryEGB\n91fEVVzXyduFVB23n4mbywvq51sm6nFGed8IPcKFvhPUhmJMDWpM21S9Ci1kll5E\n0BqeMnnn8gfWcK6IF+NPIwrxbCo/2RIkZ2KOzcln2cYrxb7fcGzPk46dNeEZbs24\nJPCpvIWJlCTWHXiFkYlj2dOqSwKBgQDAOz0WsUnYudEFcQDJXqUjKYMtKXN0QB/G\nGY+u8mzLE3Z4GoOrd4rtbNhFt+W0o+sw9Z3JiSMUUkndvGsPBMc9GE+pXmXeYqtA\nj9Mb+KRHrkBlCcofS6ychmk30fbX7t9wUYQreFm959T989eoPmcHj8sXwQwNlc2l\ncdVgtrRJCwKBgG/RgiAhlRozkgGb+UvsZU8WaiH/du9IF+v+BhuAYXpe0ya+SK5m\nG6IFv9iUU0P99+QvcP8/x4DRoRt5gNClfgMgtcmKIiVbG2xxiXK4jYQjgHbIXSp2\n9g/H2ChZyMqMAEAyLnuoQxOoHIZxhc4/RNe9y5+ISEo+lfr3HQHwYZazAoGAe8nq\nBeH3FwxZ0PI7OnGrUCBca8nEonjkvTIat+M/Mer/oEoavmGF4mz0PLk2wAPK4cVZ\nbb3VDDINhS/flVVTZEFykzPJz9KkSzgTD3EngU1yBF6wfUTDDCz2Ns8L8XPPCUpF\nHaUrzUIsg7jyCFLfEByGAW78bwcn3cGXUed1448CgYAC55nm4JUmuj1dOclyLszm\nF2fCF5Hc1vTWrBxf7miN/d0Suh9ngpvKM+ycx9dE7gQZ2w7NfMXYFVd42HAWl7sv\nL3NveNjwtC0afgMMBJrEdU5LalLusx4KF8nGRFF8JxsM0ta7twuF6jGldsX94emQ\n1gqoXCW6hNcCSjgsj2SmjA==\n-----END PRIVATE KEY-----\n",
+    "client_email": "vision@tictocgame-256618.iam.gserviceaccount.com",
+    "client_id": "115005276263735339953",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vision%40tictocgame-256618.iam.gserviceaccount.com"
+  }
+  
