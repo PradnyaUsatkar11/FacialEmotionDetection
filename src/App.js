@@ -3,7 +3,12 @@ import { render } from 'react-dom';
 import Webcam from "react-webcam";
 import styled from 'styled-components';
 import './style.css';
+import {
+  Rectangle
+} from 'draw-shape-reactjs';
 const camera = "environment";
+const request = require('request-promise');
+
 
 const width = "15%";
 const height = "10%";
@@ -64,7 +69,7 @@ const Styled = {
   Confirm: styled.div`
     width: 100%;
     height: 100%;
-    background-image: url("${({file}) => file}");
+    background-image: url("${({ file }) => file}");
     background-position: center;
     background-size: cover;
   `,
@@ -87,20 +92,28 @@ const Styled = {
 }
 
 class App extends Component {
-  constructor(props){ 
+  constructor(props) {
     super(props);
     this.webcam = React.createRef();
     this.state = {
       viewState: 0,
       countdown: 3,
+      emotion: undefined,
       file: undefined,
-      happy: undefined,
-      sad: undefined
+      faces: [],
+      // Angry: undefined,
+      // Disgusted: undefined,
+      // Happy: undefined,
+      // Sad: undefined,
+      // Neutral: undefined,
+      // Fearful: undefined,
+      // Surprised: undefined,
+      rectangle: undefined,
     };
   }
 
   renderWebcam = () => (
-    <Styled.Webcam audio={false} screenshotWidth={1080} videoConstraints={{ facingMode: camera, width: 1920, height: 1080 }} ref={this.webcam} />
+    <Styled.Webcam audio={false} screenshotWidth={1080} videoConstraints={{ facingMode: camera, width: 1920, height: 1080 }} ref={this.webcam} screenshotFormat="image/jpeg" />
   )
 
   renderWaitingShot = () => (
@@ -121,92 +134,110 @@ class App extends Component {
     </>
   )
 
-  renderConfirmScreen = () => (
-    <Styled.Confirm file={this.state.file}>
-      <Styled.Comments style={{top: "50%", left: "7%"}}>
-        <p>Happy<br />{this.state.happy}</p>
-      </Styled.Comments>
-      <Styled.Comments style={{top: "7%", right: "3%"}}>
-        <p>Sad<br />{this.state.sad}</p>
-      </Styled.Comments>
-    </Styled.Confirm>
+
+  renderMultipleFace = (response) => (
+
+    this.setState({
+      faces: response.map((i) => {
+        return (<li><Styled.Comments style={{ top: 25 + "%", left: 7 + "%" }}>
+          <p>{response[i].emotion}</p>
+        </Styled.Comments></li>
+        )
+      })
+    })
+
   )
 
-  handleTakePhoto = () => {
-      this.timer = setInterval(() => {
-        if(this.state.countdown === 1) {
-          new Promise((resolve, reject) => {
-            this.setState({file: this.webcam.current.getScreenshot()});
-                let newImage=this.state.file.replace(/^data:image\/[a-z]+;base64,/, "");
-                let payload={
-                  "requests":[
-                    {
-                      "image":{
-                        "content":newImage
-                      },
-                      "features":[
-                        {
-                          "type":"FACE_DETECTION",
-                          "maxResults":5
-                        },
-                        {
-                          "type":"LABEL_DETECTION",
-                          "maxResults":5
-                        },{
-                          "type":"WEB_DETECTION",
-                          "maxResults":5
-                        }
-                      ]
-                    }
-                  ]
-                }
-                let apiKey="AIzaSyC-VPmACN5h3DlWeo06GRznEzxFenC9Eeo"
-                fetch("https://vision.googleapis.com/v1/images:annotate?key="+apiKey,{method:"post",body:JSON.stringify(payload)})
-              .then(res => {
-                if (res.status !== 200) {
-                  console.log('Looks like there was a problem. Status Code: ' +
-                    res.status);
-                  return;
-                }
-                // Examine the text in the response
-              res.json().then((data) =>{
-                this.setState({sad: data.responses[0].faceAnnotations[0].sorrowLikelihood})
-                this.setState({happy: data.responses[0].faceAnnotations[0].joyLikelihood})
-                console.log(data.responses[0].faceAnnotations.joyLikelihood);
-              });
-              //.responses[0].faceAnnotations.joyLikelihood)
-                //res.json()
-              })
-              .catch(function(err) {
-                console.log('Fetch Error :-S', err);
-              });
-            resolve();
-          });
-        }
+  renderConfirmScreen = (emotion, i) => (
+    <Styled.Confirm file={this.state.file}>
+      {this.state.faces}
+    </Styled.Confirm>
 
-        if (this.state.countdown > 1) {
-          this.setState({countdown: this.state.countdown - 1});
-        }else{
-          clearInterval(this.timer);
-          this.setState({viewState: 2});
-        }
-      }, 1000);
-      
-      this.setState({viewState: 1, countdown: 3});
+  )
+
+  handleTakePhoto = async () => {
+    this.timer = setInterval(() => {
+      if (this.state.countdown === 1) {
+        new Promise(async (resolve, reject) => {
+          this.setState({ file: this.webcam.current.getScreenshot() });
+          //    let newImage=this.state.file.replace(/^data:image\/[a-z]+;base64,/, "");
+          var options = {
+            'method': 'POST',
+            'url': 'http://34.93.166.145:8080/api/image/',
+            'headers': {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ "image": this.state.file })
+
+          };
+          try {
+            let response = await request(options);
+            console.log("code..", typeof response)
+            if (response) {
+              response = JSON.parse(response)
+              console.log("response.body[success][0].emotion", response["success"])
+              if (response["success"].length > 0) {
+                this.renderMultipleFace(response["success"])
+                // for (let i = 0; i < response["success"].length; i++) {
+                //   console.log("response.body[success][0].emotion", response["success"][0].emotion)
+                //   this.setState({ emotion: response["success"][i].emotion })
+                //   this.renderMultipleFace(i)
+                //   this.updateCanvas()
+                // }
+              }
+              else {
+                this.setState({ emotion: "No face" })
+              }
+            }
+            else {
+              console.log("Some error occurred")
+            }
+            resolve();
+          }
+          catch (error) {
+            console.log("error in api call...")
+            reject();
+          }
+        })
+      }
+      if (this.state.countdown > 1) {
+        this.setState({ countdown: this.state.countdown - 1 });
+      } else {
+        clearInterval(this.timer);
+        this.setState({ viewState: 2 });
+      }
+    }, 1000);
+
+    this.setState({ viewState: 1, countdown: 3 });
   }
 
   handleReTakePhoto = () => {
 
   }
 
+  rect = (values) => {
+    const { ctx, x, y, width, height } = values;
+    ctx.fillRect(x, y, width, height);
+  }
+
+  updateCanvas = () => {
+    const ctx = this.refs.canvas.getContext('2d');
+    ctx.clearRect(0, 0, 300, 300);
+    // draw children “components”
+    this.rect({ ctx, x: 10, y: 10, width: 50, height: 50 });
+    this.rect({ ctx, x: 110, y: 110, width: 50, height: 50 });
+  }
+
   renderMainView = () => {
-    switch(this.state.viewState) {
+    switch (this.state.viewState) {
       case 0:
         return this.renderWaitingShot();
       case 1:
         return this.renderCountdown();
       case 2:
-        return this.renderConfirmScreen();
+        {
+          return this.renderConfirmScreen();
+        }
     }
   }
 
@@ -214,6 +245,7 @@ class App extends Component {
     return (
       <Styled.Root>
         {this.renderMainView()}
+        <canvas ref="canvas" />
         <Styled.Border />
       </Styled.Root>
     );
