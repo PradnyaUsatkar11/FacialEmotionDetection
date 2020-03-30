@@ -73,6 +73,7 @@ const Styled = {
     background-position: center;
     background-size: cover;
   `,
+  
   Center: styled.div`
     position: absolute;
     display: flex;
@@ -100,7 +101,8 @@ class App extends Component {
       countdown: 3,
       emotion: undefined,
       file: undefined,
-      faces: [],
+      outputImage:undefined,
+      // faces: [],
       // Angry: undefined,
       // Disgusted: undefined,
       // Happy: undefined,
@@ -108,7 +110,8 @@ class App extends Component {
       // Neutral: undefined,
       // Fearful: undefined,
       // Surprised: undefined,
-      rectangle: undefined,
+      // rectangle: undefined,
+      
     };
   }
 
@@ -122,6 +125,7 @@ class App extends Component {
       <Styled.Center>
         <Styled.Button onClick={this.handleTakePhoto} />
       </Styled.Center>
+      <Styled.Border />
     </>
   )
 
@@ -131,7 +135,9 @@ class App extends Component {
       <Styled.Countdown>
         <span>{this.state.countdown}</span>
       </Styled.Countdown>
+      <Styled.Border />
     </>
+     
   )
 
 
@@ -149,8 +155,13 @@ class App extends Component {
   )
 
   renderConfirmScreen = (emotion, i) => (
-    <Styled.Confirm file={this.state.file}>
-      {this.state.faces}
+    <Styled.Confirm file={this.state.outputImage}>
+     {/* <Styled.Comments style={{ top: "100px", left: "50px" }}>
+          <p>Happy {this.state.Happy}</p>
+        </Styled.Comments>
+        <Styled.Comments style={{ top: "25%", left: "7%" }}>
+          <p>Sad {this.state.Sad}</p>
+        </Styled.Comments> */}
     </Styled.Confirm>
 
   )
@@ -163,7 +174,7 @@ class App extends Component {
           //    let newImage=this.state.file.replace(/^data:image\/[a-z]+;base64,/, "");
           var options = {
             'method': 'POST',
-            'url': 'http://34.93.166.145:8080/api/image/',
+            'url': 'http://34.93.216.143:8080/api/image/',
             'headers': {
               'Content-Type': 'application/json'
             },
@@ -176,8 +187,8 @@ class App extends Component {
             if (response) {
               response = JSON.parse(response)
               console.log("response.body[success][0].emotion", response["success"])
-              if (response["success"].length > 0) {
-                this.renderMultipleFace(response["success"])
+              if (response["message"]=="success") {
+                this.setState({"outputImage":response["image"]})
                 // for (let i = 0; i < response["success"].length; i++) {
                 //   console.log("response.body[success][0].emotion", response["success"][0].emotion)
                 //   this.setState({ emotion: response["success"][i].emotion })
@@ -245,8 +256,7 @@ class App extends Component {
     return (
       <Styled.Root>
         {this.renderMainView()}
-        <canvas ref="canvas" />
-        <Styled.Border />
+        {/* <Styled.Border /> */}
       </Styled.Root>
     );
   }
