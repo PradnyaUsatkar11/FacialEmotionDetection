@@ -90,6 +90,15 @@ const Styled = {
     bottom: 8%;
     z-index: 10;
   `,
+  Reload: styled.div`
+    position: relative;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: green;
+    bottom: 8%;
+    z-index: 10;
+  `,
 }
 
 class App extends Component {
@@ -126,6 +135,7 @@ class App extends Component {
         <Styled.Button onClick={this.handleTakePhoto} />
       </Styled.Center>
       <Styled.Border />
+      {this.state.outputImage = undefined}
     </>
   )
 
@@ -154,7 +164,7 @@ class App extends Component {
 
   )
 
-  renderConfirmScreen = (emotion, i) => (
+  renderConfirmScreen = () => (
     <Styled.Confirm file={this.state.outputImage}>
      {/* <Styled.Comments style={{ top: "100px", left: "50px" }}>
           <p>Happy {this.state.Happy}</p>
@@ -162,6 +172,10 @@ class App extends Component {
         <Styled.Comments style={{ top: "25%", left: "7%" }}>
           <p>Sad {this.state.Sad}</p>
         </Styled.Comments> */}
+        <Styled.Center>
+          <Styled.Reload onClick={this.handleReTakePhoto}> </Styled.Reload>
+        </Styled.Center>
+        
     </Styled.Confirm>
 
   )
@@ -223,7 +237,7 @@ class App extends Component {
   }
 
   handleReTakePhoto = () => {
-
+    this.setState({ viewState: 0, countdown: 3 });
   }
 
   rect = (values) => {
